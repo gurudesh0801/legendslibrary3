@@ -42,7 +42,7 @@ const SignUp = ({ onSignUpSuccess }) => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("https://legendslibrary-api.vercel.app/signup", {
         method: "POST", // Use POST method to send data
         headers: {
           "Content-Type": "application/json",
@@ -72,7 +72,7 @@ const SignUp = ({ onSignUpSuccess }) => {
       </div>
       <div className="signInForm">
         <h1 className="formHeading">Sign Up to Legends Library</h1>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} method="POST" action="https://legendslibrary-api.vercel.app/signup">
           <label htmlFor="name">Name*</label>
           <input
             type="text"
