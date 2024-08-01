@@ -40,7 +40,7 @@ const User = mongoose.model("User", userSchema);
 // Routes
 // Home Route API
 app.get("/", (res, req) => {
-  res.send("Hello");
+  res.json({msg: "Hello World"}).staus(200);
 });
 
 // Signup API
