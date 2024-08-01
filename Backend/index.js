@@ -11,6 +11,12 @@ const port = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(cors({
+  origin: "https://legends-library.vercel.app",
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+}))
+
 // Database connection
 mongoose
   .connect("mongodb://localhost:27017/legendslibrary", {
