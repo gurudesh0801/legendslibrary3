@@ -44,7 +44,7 @@ const SignUp = () => {
     }
 
     try {
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("https://legendslibrary-api.vercel.app/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -77,7 +77,7 @@ const SignUp = () => {
   const fetchUserDetails = async (userId) => {
     console.log("Fetching details for user ID:", userId); // Debug log
     try {
-      const userResponse = await fetch(`http://localhost:5000/user/${userId}`);
+      const userResponse = await fetch(`https://legendslibrary-api.vercel.app/user/${userId}`);
       if (!userResponse.ok) {
         const errorText = await userResponse.text();
         console.error("Failed to fetch user details:", errorText);
@@ -105,7 +105,7 @@ const SignUp = () => {
         <form
           onSubmit={handleSubmit}
           method="POST"
-          action="http://localhost:5000/signup"
+          action="https://legendslibrary-api.vercel.app/signup"
         >
           <label htmlFor="name">Name*</label>
           <input
