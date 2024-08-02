@@ -1,20 +1,21 @@
-const { MongoClient } = require("mongodb");
+const uri = process.env.MONGO_URL;
 
-const uri = "mongodb://localhost:27017";
-const databaseName = "legendslibrary";
+const mongoose = require("mongoose");
 
-const client = new MongoClient(uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const dbconnect = () => {
+  console.log("Attempting to connect to MongoDB...");
 
-client.connect((err) => {
-  if (err) {
-    console.error("Error connecting to the MongoDB database:", err);
-    return;
-  }
-  console.log("Connected to the MongoDB database.");
-  const db = client.db(databaseName);
-});
-
-module.exports = client;
+  mongoose
+    .connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    })
+    .then(() => {
+      console.log("Connected to MongoDB");
+      console.log("Mongoose connection state:", mongoose.connection.readyState);
+    })
+    .catch((err) => {
+      console.error("Error connecting to MongoDB:", err);
+    });
+};
+module.exports = dbconnect;

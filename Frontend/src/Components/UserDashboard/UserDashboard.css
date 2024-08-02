@@ -1,0 +1,35 @@
+/* UserDashboard.css */
+
+.user-dashboard-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+}
+
+.user-navbar {
+  width: 250px; /* Adjust as needed */
+  background-color: #f4f4f4; /* Light grey background */
+  border-right: 1px solid #ddd; /* Border for separation */
+  padding: 1rem;
+  position: fixed;
+  height: 100%; /* Full height */
+  overflow-y: auto; /* Scroll if content overflows */
+}
+
+.user-details {
+  flex: 1; /* Take up remaining space */
+  margin-left: 250px; /* Offset by the width of the navbar */
+  padding: 2rem; /* Padding around the content */
+  background-color: #fff; /* White background */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+}
+
+.user-details h1 {
+  margin-bottom: 1rem;
+}
+
+.user-details p {
+  margin: 0.5rem 0;
+}

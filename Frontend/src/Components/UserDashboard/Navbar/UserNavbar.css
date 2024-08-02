@@ -130,7 +130,7 @@ body {
   position: absolute;
   width: calc(100% - 300px);
   left: 300px;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   background: var(--white);
   transition: 0.5s;
 }
@@ -177,7 +177,7 @@ body {
   .cardBox {
     grid-template-columns: repeat(2, 1fr);
   }
-  .toggle{
+  .toggle {
     display: block;
   }
 }

@@ -1,43 +1,61 @@
-// UserDashboard.js
-
-import React, { useEffect, useState } from 'react';
-import './UserDashboard.css';
-import UserNavbar from './Navbar/UserNavbar';
+import React, { useEffect } from "react";
+import { useUser } from "../../utils/useContext";
+import "./UserDashboard.css";
+import UserNavbar from "./Navbar/UserNavbar";
 
 const UserDashboard = () => {
-  const [user, setUser] = useState(null);
-  const userId = '66ab16e99eec205ea78276a9';
+  const { user, updateUser } = useUser(); // Get user data and update function from context
+
+  // Function to fetch user data from the backend
+  const fetchUserData = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:5000/user/${userId}`);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Failed to fetch user data:", errorText);
+        alert("Failed to fetch user data.");
+        return null;
+      }
+
+      const userData = await response.json();
+      console.log("Fetched user data:", userData); // Debug log
+      return userData;
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      alert("An error occurred while fetching user data. Please try again.");
+      return null;
+    }
+  };
 
   useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/user/${userId}`);
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        } else {
-          console.error('Error fetching user details');
+    const fetchAndSetUserData = async () => {
+      if (user?.id) {
+        const userData = await fetchUserData(user.id);
+        if (userData) {
+          updateUser(userData); // Update user context with received user data
         }
-      } catch (error) {
-        console.error('Error fetching user details:', error);
       }
     };
 
-    fetchUserDetails();
-  }, [userId]);
+    fetchAndSetUserData();
+  }, [user?.id, updateUser]);
+
+  // Check if user data is loaded
+  const isLoading = !user; // Loading state if user is undefined
+  console.log(user);
 
   return (
     <div>
       <UserNavbar />
       <div className="user-details">
-        {user ? (
+        {isLoading ? (
+          <p>Loading Details...........</p>
+        ) : (
           <div>
             <h1>Welcome, {user.name}</h1>
             <p>Email: {user.email}</p>
-            <p>Age: {user.age}</p> {/* Add more user details as needed */}
+            <p>Phone: {user.phone}</p>
           </div>
-        ) : (
-          <p>Loading user details...</p>
         )}
       </div>
     </div>
@@ -45,4 +63,3 @@ const UserDashboard = () => {
 };
 
 export default UserDashboard;
-

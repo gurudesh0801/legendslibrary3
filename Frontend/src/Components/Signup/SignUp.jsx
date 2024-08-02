@@ -1,10 +1,12 @@
 import React, { useState } from "react";
+import { useUser } from "../../utils/useContext";
 import signInImage from "/Images/signInImage.jpg";
 import "./SignUp.css";
 
-const SignUp = ({ onSignUpSuccess }) => {
+const SignUp = () => {
   const [captcha, setCaptcha] = useState(generateCaptcha());
   const [enteredCaptcha, setEnteredCaptcha] = useState("");
+  const { updateUser } = useUser(); // Access updateUser from context
 
   function generateCaptcha() {
     const characters =
@@ -43,25 +45,53 @@ const SignUp = ({ onSignUpSuccess }) => {
 
     try {
       const response = await fetch("http://localhost:5000/signup", {
-        method: "POST", // Use POST method to send data
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        const result = await response.json();
-        alert("Sign-up successful!");
-        onSignUpSuccess(result.userId); // Pass the user ID to the parent component
-        window.location.href = "/userdashboard"; // Redirect after successful sign-up
-      } else {
+      if (!response.ok) {
         const errorText = await response.text();
         alert(`Sign-up failed: ${errorText}`);
+        return;
+      }
+
+      const result = await response.json();
+      console.log("Sign-up result:", result.userId); // Debug log
+
+      // Ensure `userId` is present in the result
+      if (result.userId) {
+        alert("Sign-up successful!");
+        fetchUserDetails(result.userId);
+      } else {
+        alert("Sign-up failed: No user ID returned.");
       }
     } catch (error) {
       console.error("Error:", error);
       alert("An error occurred. Please try again.");
+    }
+  };
+
+  const fetchUserDetails = async (userId) => {
+    console.log("Fetching details for user ID:", userId); // Debug log
+    try {
+      const userResponse = await fetch(`http://localhost:5000/user/${userId}`);
+      if (!userResponse.ok) {
+        const errorText = await userResponse.text();
+        console.error("Failed to fetch user details:", errorText);
+        alert("Failed to fetch user details.");
+        return;
+      }
+
+      const userData = await userResponse.json();
+      console.log("Fetched user details:", userData); // Debug log
+      updateUser(userData); // Update user context with received user data
+      window.location.href = "/userdashboard"; // Redirect after successful sign-up
+    } catch (error) {
+      console.error("Error fetching user details:", error);
+      alert("An error occurred while fetching user details. Please try again.");
     }
   };
 
@@ -72,7 +102,11 @@ const SignUp = ({ onSignUpSuccess }) => {
       </div>
       <div className="signInForm">
         <h1 className="formHeading">Sign Up to Legends Library</h1>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={handleSubmit}
+          method="POST"
+          action="http://localhost:5000/signup"
+        >
           <label htmlFor="name">Name*</label>
           <input
             type="text"
