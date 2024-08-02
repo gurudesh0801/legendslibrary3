@@ -88,7 +88,7 @@ const SignUp = () => {
       const userData = await userResponse.json();
       console.log("Fetched user details:", userData); // Debug log
       updateUser(userData); // Update user context with received user data
-      window.location.href = "/userdashboard"; // Redirect after successful sign-up
+      // window.location.href = "/userdashboard"; // Redirect after successful sign-up
     } catch (error) {
       console.error("Error fetching user details:", error);
       alert("An error occurred while fetching user details. Please try again.");

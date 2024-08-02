@@ -10,6 +10,7 @@ const UserDashboard = () => {
   const fetchUserData = async (userId) => {
     try {
       const response = await fetch(`http://localhost:5000/user/${userId}`);
+      console.log(response);
       if (!response.ok) {
         const errorText = await response.text();
         console.error("Failed to fetch user data:", errorText);
